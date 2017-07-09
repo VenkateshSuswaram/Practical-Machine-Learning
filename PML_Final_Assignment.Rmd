@@ -133,6 +133,7 @@ modFitA1 <- rpart(myTrainingPCA$classe ~ ., data=myTraining, method="class")
 
 fancyRpartPlot(modFitA1)
 
+
 ```
 
 Now we will compare the out of sample error using cross validation method.
@@ -143,6 +144,13 @@ Now we will compare the out of sample error using cross validation method.
 predictionsA1 <- predict(modFitA1, myTesting, type = "class")
 
 confusionMatrix(predictionsA1, myTesting$classe)
+
+ErrRateFn = function(TrueValues, PredictedValues) {
+    sum(PredictedValues != TrueValues)/length(TrueValues)
+}
+
+errRate = ErrRateFn(myTrainingPCA$classe, predictionsA1)
+
 
 ```
 
@@ -169,18 +177,5 @@ predictionsB2 <- predict(modFitB1, testing, type = "class")
 
 ```
 
-## Export the results in to separate text files
-
-```{r}
-Fn_write_files = function(x){
-  n = length(x)
-  for(i in 1:n){
-    filename = paste0("problem_id_",i,".txt")
-    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
-  }
-}
-
-Fn_write_files(predictionsB2)
-```
 
 
